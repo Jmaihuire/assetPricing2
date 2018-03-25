@@ -2,11 +2,10 @@
 # Author:Zhang Haitao
 # Email:13163385579@163.com
 # TIME:2018-03-21  18:17
-# NAME:assetPricing2-skewness.py
-
+# NAME:assetPricing2-7skewness.py
 from dout import *
-import numpy as np
 import statsmodels.formula.api as sm
+from tool import monthly_cal
 
 
 def _get_comb():
@@ -66,42 +65,6 @@ def _idioskew(subx):
     idioskew = resids.skew()
     return idioskew
 
-def _for_one_stock(x, months, history, thresh, type_func):
-    '''
-    calculate the indicator for one stock,and get a time series
-
-    :param x:series or pandas DataFrame
-    :param months:list,contain the months to calculate the indicators
-    :param history:history length,such as 12M
-    :param thresh:the mimium required observe number
-    :param type_func:the function name from one of [_skew,_coskew,_idioskew]
-    :return:time series
-    '''
-    sid=x.index.get_level_values('sid')[0]
-    x=x.reset_index('sid',drop=True)
-    values=[]
-    for month in months:
-        subx=x.loc[:month].last(history)
-        subx=subx.dropna()
-        if subx.shape[0]>thresh:
-            values.append(type_func(subx))
-        else:
-            values.append(np.nan)
-    print(sid)
-    return pd.Series(values,index=months)
-
-def monthly_cal(comb, freq, dict, type_func, fn):
-    values = []
-    names = []
-    for history, thresh in dict.items():
-        days = comb.index.get_level_values('t').unique()
-        months = days[days.is_month_end]
-        value = comb.groupby('sid').apply(lambda df: _for_one_stock(df, months, history, thresh,type_func))
-        values.append(value.T)
-        names.append(freq+'_'+history)
-    result = pd.concat(values, axis=0, keys=names)
-    result.to_csv(os.path.join(DATA_PATH,fn+'.csv'))
-    return result
 
 def cal_skewnewss():
     dictD = {'1M': 15, '3M': 50, '6M': 100, '12M': 200, '24M': 450}
@@ -116,6 +79,9 @@ def cal_skewnewss():
     monthly_cal(combM, 'M', dictM, _skew, 'skewM')
     monthly_cal(combM, 'M', dictM, _coskew, 'coskewM')
     monthly_cal(combM, 'M', dictM, _idioskew, 'idioskewM')
+
+
+
 
 if __name__=='__main__':
     cal_skewnewss()

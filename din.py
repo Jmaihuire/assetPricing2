@@ -97,7 +97,7 @@ def _get_rf(freq):
     del src.index.name
 
     rf=src[[dic[freq]]][2:]#delete the first two rows
-    rf.columns=['rf']
+    rf.columns=['rf'+freq]
 
     rf.index=pd.to_datetime(rf.index)
     if freq in ['W','M']:
@@ -125,14 +125,8 @@ def get_rfM():
 def get_eretD():
     stockRetD=read_df('stockRetD','D')
     rfD=read_df('rfD','D')
-    eretD=stockRetD.sub(rfD['rf'],axis=0)
+    eretD=stockRetD.sub(rfD['rfD'],axis=0)
     eretD.to_csv(os.path.join(DATA_PATH,'eretD.csv'))
-
-def get_eretM():
-    stockRetM=read_df('stockRetM','M')
-    rfM=read_df('rfM','M')
-    eretM=stockRetM.sub(rfM['rf'],axis=0)
-    eretM.to_csv(os.path.join(DATA_PATH,'eretM.csv'))
 
 def get_stockRetM():
     '''
@@ -150,6 +144,12 @@ def get_stockRetM():
     colname='Stkcd'
     fn='stockRetM'
     _get_df(tbname, varname, indname, colname, fn)
+
+def get_eretM():
+    stockRetM=read_df('stockRetM','M')
+    rfM=read_df('rfM','M')
+    eretM=stockRetM.sub(rfM['rfM'],axis=0)
+    eretM.to_csv(os.path.join(DATA_PATH,'eretM.csv'))
 
 def get_mktRetM():
     newName='mktRetM'
@@ -179,7 +179,7 @@ def get_capM():
     varname='Msmvosd' #月个股流通市值，单位 人民币
     indname='Trdmnt'
     colname='Stkcd'
-    fn='mktCap'
+    fn='capM'
     _get_df(tbname, varname, indname, colname, fn)
 
 # financial indicators-------------------------------------------
@@ -216,7 +216,7 @@ def get_stockCloseY():
     df.index=convert_freq(df.index,'Y')
     df.to_csv(path)
 
-def get_ff3_resset():
+def get_ff3M_resset():
     '''
     from resset data
 
@@ -230,7 +230,7 @@ def get_ff3_resset():
     df=df.set_index('Date')
     df=df[['Rmrf_tmv','Smb_tmv','Hml_tmv']]#weighted with tradable capitalization
     df.columns=['rp','smb','hml']
-    df.to_csv(os.path.join(DATA_PATH,'ff3_resset.csv'))
+    df.to_csv(os.path.join(DATA_PATH,'ff3M_resset.csv'))
 
 def get_ff3M():
     df=read_gta('STK_MKT_ThrfacMonth')
@@ -241,7 +241,7 @@ def get_ff3M():
     df=df.set_index('t')
     df.to_csv(os.path.join(DATA_PATH,'ff3M.csv'))
 
-def get_ffc():
+def get_ffcM():
     df=read_gta('STK_MKT_CarhartFourFactors')
     # P9709 全部A股市场包含沪深A股和创业板
     # 流通市值加权
@@ -249,9 +249,21 @@ def get_ffc():
         ['TradingMonth', 'RiskPremium1', 'SMB1', 'HML1', 'UMD2']]
     df.columns = ['t', 'rp', 'smb', 'hml', 'mom']
     df = df.set_index('t')
-    df.to_csv(os.path.join(DATA_PATH, 'ffc.csv'))
+    df.to_csv(os.path.join(DATA_PATH, 'ffcM.csv'))
 
-def get_hxz4():
+def get_ff5M():
+    df=read_gta('STK_MKT_FivefacMonth')
+    #P9709 全部A股市场包含沪深A股和创业板
+    #流通市值加权
+    #2*3 投资组合
+    df=df[(df['MarkettypeID']=='P9709') & (df['Portfolios']==1)][
+        ['TradingMonth','RiskPremium1','SMB1','HML1','RMW1','CMA1']]
+    df.columns=['t','rp','smb','hml','rmw','cma']
+    df=df.set_index('t')
+    df.to_csv(os.path.join(DATA_PATH,'ff5M.csv'))
+
+
+def get_hxz4M():
     '''
     D:\app\python27\zht\researchTopics\assetPricing\calFactors.py\get_hxz4Factors()
 
@@ -269,9 +281,9 @@ def get_hxz4():
         dfs.append(df)
     comb=pd.concat(dfs,axis=1)
     comb.index=pd.to_datetime(comb.index)+MonthEnd()
-    ff3=read_df('ff3_gta','M')
+    ff3=read_df('ff3M','M')
     comb['rp']=ff3['rp']
-    comb.to_csv(os.path.join(DATA_PATH,'hxz4.csv'))
+    comb.to_csv(os.path.join(DATA_PATH,'hxz4M.csv'))
 
 def get_ff3D():
     tbname='STK_MKT_ThrfacDay'

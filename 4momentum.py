@@ -2,7 +2,7 @@
 # Author:Zhang Haitao
 # Email:13163385579@163.com
 # TIME:2018-03-21  14:55
-# NAME:assetPricing2-momentum.py
+# NAME:assetPricing2-4momentum.py
 
 from config import *
 from dout import read_df

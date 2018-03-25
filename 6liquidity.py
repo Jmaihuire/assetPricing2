@@ -2,16 +2,15 @@
 # Author:Zhang Haitao
 # Email:13163385579@163.com
 # TIME:2018-03-21  09:04
-# NAME:assetPricing2-liq.py
+# NAME:assetPricing2-6liquidity.py
 
 import pandas as pd
 import os
 import statsmodels.formula.api as sm
 import numpy as np
-from beta import groupby_rolling
 from dout import read_df
 from config import DATA_PATH
-
+from tool import groupby_rolling
 
 from zht.data.gta.api import read_gta
 from zht.utils.dateu import convert_freq

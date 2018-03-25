@@ -7,7 +7,7 @@
 import os
 import pandas as pd
 from config import DATA_PATH
-from pandas.tseries.offsets import MonthEnd,Day
+from pandas.tseries.offsets import MonthEnd
 
 
 def read_df(fn, freq):

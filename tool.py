@@ -1,35 +1,12 @@
 # -*-coding: utf-8 -*-
+# Python 3.6
 # Author:Zhang Haitao
 # Email:13163385579@163.com
-# TIME:2018-03-21  11:17
-# NAME:assetPricing2-beta.py
-
+# TIME:2018-03-22  15:03
+# NAME:assetPricing2-tool.py
 
 from dout import *
 import numpy as np
-import statsmodels.formula.api as sm
-
-
-def _get_comb():
-    #page 123
-    eretD = read_df('eretD', freq='D')
-    eretD = eretD.stack()
-    eretD.index.names = ['t', 'sid']
-    eretD.name = 'eret'
-    rpD=read_df('rpD','D')
-    combD = eretD.to_frame().join(rpD)
-
-    eretM = read_df('eretM', freq='M')
-    eretM = eretM.stack()
-    eretM.index.names = ['t', 'sid']
-    eretM.name = 'eret'
-    rpM=read_df('rpM','M')
-    combM = eretM.to_frame().join(rpM)
-    return combD,combM
-
-def _beta(subx):
-    beta=sm.ols('eret ~ rp',data=subx).fit().params['rp']
-    return beta
 
 #TODO:upgrade this funcntion use rolling
 def _for_one_stock(x, months, history, thresh, type_func):
@@ -73,13 +50,3 @@ def monthly_cal(comb, prefix, dict, type_func, fn):
     result.to_csv(os.path.join(DATA_PATH,fn+'.csv'))
     return result
 
-def cal_beta():
-    dictD = {'1M': 15, '3M': 50, '6M': 100, '12M': 200, '24M': 450}
-    dictM = {'12M': 10, '24M': 20, '36M': 24, '60M': 24}
-    combD,combM=_get_comb()
-    monthly_cal(combD,'D',dictD,_beta,'betaD')
-    monthly_cal(combM,'M',dictM,_beta,'betaM')
-
-
-if __name__=='__main__':
-    cal_beta()

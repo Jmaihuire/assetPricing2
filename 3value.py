@@ -2,7 +2,7 @@
 # Author:Zhang Haitao
 # Email:13163385579@163.com
 # TIME:2018-03-21  14:18
-# NAME:assetPricing2-value.py
+# NAME:assetPricing2-3value.py
 
 
 from config import *
