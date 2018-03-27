@@ -5,7 +5,9 @@
 
 # data
 1. read the documents of GTA about the calculation of the indicators.What's more,the paper it mentions is great guidence for further research.
-
+2. At time t,we calculate the indicators and use this indicators to get sorted-portfolios
+    then use these portfolio to calculate the mimicking portfolio returns(long-short factors) in time t+1.So the
+    time corresponding to indicators are t,the time for factors are time t+1.
 
 # functions to add
 1. show those significant result with bold characters as table A5 of Asness, Clifford S., Andrea Frazzini, and Lasse Heje Pedersen. “Quality Minus Junk.” SSRN Scholarly Paper. Rochester, NY: Social Science Research Network, June 5, 2017. https://papers.ssrn.com/abstract=2312432.
@@ -27,5 +29,11 @@
     this table to describle the possible asymmetry distribution of different characteristics.
 11. figure 2 of Stambaugh, Yu, and Yuan, “Arbitrage Asymmetry and the Idiosyncratic Volatility Puzzle.”
     is an alternative for the part A in panel B of table 9.6 in Bali.
+12. add the function to detect the asymmetrical effects of long and short leg,or market condition or sentiment
+13. add GRS as chapter 5.3 of Pan, Tang, and Xu, “Speculative Trading and Stock Returns.”
+14. add a sample matching method to calculate the spread returns as stated in the notes of Xie and Mo, “Index Futures Trading and Stock Market Volatility in China.”
+15. add a function to compare the result of total sample with that of subsample,such as page
+    221 of Ellul and Panayides, “Do Financial Analysts Restrain Insiders’ Informational Advantage?”
+
 
 
