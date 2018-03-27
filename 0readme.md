@@ -36,5 +36,3 @@
     221 of Ellul and Panayides, “Do Financial Analysts Restrain Insiders’ Informational Advantage?”
 
 
-
-
